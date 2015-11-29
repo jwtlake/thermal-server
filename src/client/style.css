@@ -1,0 +1,39 @@
+.sensor-card {
+  padding: 10px 40px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background: #3498db;
+  width: 350px;
+  border-radius: 3px;
+  color: white;
+}
+
+.sensor-row {
+  text-align: left;
+}
+
+.sensor-block {
+  padding: 5px 10px 5px 0px;
+  display: inline-block;
+  vertical-align:top;
+}
+
+.sensor-type {
+  font-size: 10px;
+  font-style: oblique;
+}
+
+.sensor-name {
+  font-size: 20px;
+}
+
+.sensor-temperature {
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+
+.sensor-timestamp {
+  font-size: 10px;
+  font-style: oblique;
+}

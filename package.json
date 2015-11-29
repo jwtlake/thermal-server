@@ -1,0 +1,26 @@
+{
+  "name": "thermal-server",
+  "version": "1.0.0",
+  "description": "Home automation project to monitor, log, and send alerts using temperature sensors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwtlake/thermal-server.git"
+  },
+  "author": "Jonathan Lake",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwtlake/thermal-server/issues"
+  },
+  "homepage": "https://github.com/jwtlake/thermal-server#readme",
+  "dependencies": {
+    "hapi": "^11.1.2",
+    "bookshelf": "^0.9.1",    
+    "knex": "^0.9.0",
+    "nconf": "^0.8.2",
+    "pg": "^4.4.3"
+  }
+}
