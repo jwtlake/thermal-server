@@ -7,10 +7,10 @@ var settings = require(appRoot + '/src/server/config/settings');
 var knex = require('knex')({
   client: 'pg',
   connection: {
-    host: settings.get('postgress:host'),
-    user: settings.get('postgress:user'),
-    password: settings.get('postgress:password'),
-    database: settings.get('postgress:database')
+    host: settings.get('postgres:host'),
+    user: settings.get('postgres:user'),
+    password: settings.get('postgres:password'),
+    database: settings.get('postgres:database')
   }
 });
 

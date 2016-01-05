@@ -1,19 +1,25 @@
 'use strict';
 
 //** Dependencies **//
-var api = require(appRoot + '/src/server/controllers/api');
+var api = require(appRoot + '/src/server/routes/api');
 
 //** Controllers Array**//
 var controllers = [];
 
-/** Common Controllers **/ 
-var common = {
-	//maybe add something here
-};
+/** Common Routes **/ 
+var common = [
+	{
+		path: '/',
+		method: 'GET',
+		handler: function(request, reply){
+			reply('What up!');
+		}
+	}
+];
 
-//** Collect Controllers **/ 
-controllers['common'] = common;
-controllers['api'] = api;
+/** Collect Routes **/ 
+var routes = common.concat(api);
+// when adding more routes concat(api,ui,etc)
 
-//** Exports **//
-module.exports = controllers;
+//** Export Routes **//
+module.exports = routes;

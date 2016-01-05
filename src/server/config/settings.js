@@ -8,10 +8,10 @@ var defaults = {
 	hapi:{
 		port: 3000
 	},
-	postgress:{
+	postgres:{
 		host: 'localhost',
 		port: '5432',
-		user: 'postgres',
+		user: 'jwtlake',
 		password: 'da87bzZd',
 		database: 'thermal'
 	}
