@@ -14,6 +14,13 @@ var common = [
 		handler: function(request, reply){
 			reply('What up!');
 		}
+	},
+	{
+		path: '/home',
+		method: 'GET',
+		handler: function(request, reply){
+			reply('What up!- home');
+		}	
 	}
 ];
 

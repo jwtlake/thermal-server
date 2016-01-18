@@ -3,34 +3,35 @@
 'use strict';
 
 var models = require(appRoot + '/src/server/models');
-
-
-//** Need to test and review **//
-
-module.exports = {
 	//** Reading
+module.exports = {
+
 	get: function(request, reply) {
 		var id = request.params.id;
 		var start = request.query.start;
 		var end = request.query.end;
+		var orderBy = request.query.orderBy;
 
-		//default query
-		function where(qb) {
-			qb.where({sensor_id:id})
-			.orderBy('reading_at','desc');
+		// default query
+		var qb = new models.Reading().query({where:{sensor_id:id}});		
+		
+		// check for query strings
+		if(start) {
+			qb.query().andWhere('reading_at','>=',start);
 		}
 
-		//check for date range
-		if(typeof start !== 'undefined' && typeof end !== 'undefined') {
-			where = function(qb) {
-				qb.where({sensor_id:id})
-				.andWhere('reading_at','>=',start)
-				.andWhere('reading_at','<=',end)
-				.orderBy('reading_at','desc');
-			}
+		if(end) {
+			qb.query().andWhere('reading_at','<=',end);
 		}
 
-		new models.Reading().query(where).fetchAll({
+		if(orderBy === 'asc') {
+			qb.query().orderBy('reading_at','asc');
+		} else {
+			qb.query().orderBy('reading_at','desc');
+		}
+
+		// execute query
+		qb.fetchAll({
 			// withRelated: ['sensor'],
 			require: true //only trigger then if we find a result
 		}).then(function(readings) {

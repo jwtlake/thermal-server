@@ -4,8 +4,8 @@
 
 var models = require(appRoot + '/src/server/models');
 
+//** Sensor
 module.exports = {
-	//** Sensor
 	list: function(request, reply) {
 		new models.Sensor()
 		.fetchAll({

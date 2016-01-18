@@ -4,8 +4,8 @@
 
 var models = require(appRoot + '/src/server/models');
 
+//** SensorType
 module.exports = {
-	//** SensorType
 	list: function(request, reply) {
 		new models.SensorType()
 		.fetchAll().then(function(sensor_type){
