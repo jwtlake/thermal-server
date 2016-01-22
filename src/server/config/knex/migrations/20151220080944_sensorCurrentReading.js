@@ -2,9 +2,10 @@
 'use strict';
 
 exports.up = function(knex, Promise) {
-	//add current reading column
+	//add current_reading and reading_at columns to store current temps in the sensor table
 	return knex.schema.table('sensor', function(table) {
 		table.decimal('current_reading', 5, 2);
+		table.timestamp('reading_at');
 	});
 };
 
@@ -19,5 +20,16 @@ exports.down = function(knex, Promise) {
   		}else{
   			return;
   		}
-  	});
+  	}).then(function() {
+		knex.schema.hasColumn('sensor', 'reading_at').then(function(exists) {
+			if(!exists) {
+				//remove reading_at column
+				return knex.schema.table('sensor', function(table) {
+					table.dropColumn('reading_at');
+				});
+			}else{
+				return;
+			}
+  		});
+  	})
 };

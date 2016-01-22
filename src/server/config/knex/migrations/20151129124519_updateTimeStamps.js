@@ -2,7 +2,7 @@
 'use strict';
 
 exports.up = function(knex) {
-	//add reading datetime column
+	//add reading_at datetime column to store the actual time the reading was taken
 	return knex.schema.table('reading', function(table) {
 		table.timestamp('reading_at');
 	});

@@ -40,6 +40,8 @@ module.exports = {
 			api_key: api_key
 			// created_at: 
 			// updated_at:
+			// current_reading:
+			// reading_at:
 		};
 
 		new models.Sensor(newSensor)
@@ -59,8 +61,8 @@ module.exports = {
 		new models.Sensor({id: id})
 		.fetch({
 			withRelated: ['sensortype'],
-			require: true //only trigger then if we find a result
-		}).then(function(sensor){
+			require: true //only trigger if we find a result
+		}).then(function(sensor) {
 			sensor.save({
 				name: name || sensor.get('name'),
 				sensor_type_id: sensor_type_id || sensor.get('sensor_type_id'),
@@ -81,7 +83,7 @@ module.exports = {
 		.fetch({require: true}) //only trigger then if we find a result
 		.then(function(sensor) {
 			sensor.destroy()
-			.then(function(){
+			.then(function() {
 				reply('Deleted').code(200);	
 			});
 		}, function(err) {
