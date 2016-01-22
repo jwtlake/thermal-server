@@ -1,3 +1,5 @@
+var React = require('react');
+
 //Sensor
 var Sensor = React.createClass({
   getInitialState: function(){
@@ -8,7 +10,11 @@ var Sensor = React.createClass({
   },
   render: function() {
     
-    var readingDateTime = new Date(Date.parse(this.state.readingdatetime));
+    //added check to prevent errors if there was no sensortype object
+    if (this.state.sensortype && this.state.sensortype.name)
+      var type = this.state.sensortype.name 
+
+    var readingDateTime = new Date(Date.parse(this.state.reading_at));
     var now = new Date(); 
     var diff = now.getTime() - readingDateTime.getTime();
     
@@ -46,11 +52,11 @@ var Sensor = React.createClass({
           </div>
           <div className="sensor-block">
             <div><span className="sensor-name">{this.state.name}</span></div>
-            <div><span className="sensor-type">{this.state.type}</span></div>
+            <div><span className="sensor-type">{type}</span></div>
           </div>
         </div>
         <div>
-          <span className="sensor-temperature">{this.state.temperature} ºF</span>
+          <span className="sensor-temperature">{this.state.current_reading} ºF</span>
           <br/>
           <span className="sensor-timestamp">Last Updated: {dateTimeStampUI}</span>
         </div>
@@ -66,13 +72,13 @@ var Main = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    $.get("https://api.myjson.com/bins/1cms7", function(data){
+    $.get("/api/sensors", function(data){
       component.setState({sensors: data});
     });
   },
   render: function(){
     var allSensors = this.state.sensors.map(function(sensorData){
-      return (<Sensor data={sensorData} />);
+      return (<Sensor key={sensorData.id} data={sensorData} />);
     });
     return (
       <div>
