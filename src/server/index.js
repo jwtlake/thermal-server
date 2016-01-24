@@ -2,17 +2,16 @@
 
 /** dependencies **/ 
 var Hapi = require('hapi');
+var Inert = require('inert');
+var Events = require(appRoot + '/src/server/events');
 var routes = require(appRoot + '/src/server/routes');
 var settings = require(appRoot + '/src/server/config/settings');
-
-
-
-var Inert = require('inert'); //***test
 
 // new server instance
 var server = new Hapi.Server();
 
-server.register(Inert, () => {}); //***test
+// static file serving
+server.register(Inert, () => {});
 
 // configure connection
 server.connection({
@@ -21,6 +20,9 @@ server.connection({
 
 // add routes 
 server.route(routes);
+
+// start socketio service
+Events.startSocketListener(server.listener);
 
 // start server
 server.start(function () {

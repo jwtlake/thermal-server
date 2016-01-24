@@ -1,4 +1,6 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
+var socket = io(); //should i be passing this bundled?
 
 //Sensor
 var Sensor = React.createClass({
@@ -88,5 +90,10 @@ var Main = React.createClass({
   }
 });
 
+// Socket events
+socket.on('newReading', function (data) {
+  alert('newReading');
+});
+
 //Render
-React.render(<Main />, document.getElementById("root"));
+ReactDOM.render(<Main />, document.getElementById("root"));
