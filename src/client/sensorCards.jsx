@@ -48,7 +48,7 @@ var Sensor = React.createClass({
         var age = Math.round(diff/ min);
         if(age < 2) {plural = '';}
         dateTimeStampUI += age +' Minute' + plural + ' Ago';
-      }else if(diff/ sec > 1) { // over a sec
+      }else if(diff/ sec > 0) { // over a sec
         //setInterval(component.render, 1000); // re-render every second so the ui counts down seconds
         var age = Math.round(diff/ sec);
         if(age < 2) {plural = '';}              
