@@ -14,12 +14,13 @@ var Sensor = React.createClass({
     this.setState({hover: false});
   },
   render: function() {
+    var component = this;
 
-    var id = this.props.id;
-    var name = this.props.name;
-    var type = this.props.type;
-    var current_reading = this.props.current_reading;
-    var reading_at = new Date(Date.parse(this.props.reading_at));
+    var id = component.props.id;
+    var name = component.props.name;
+    var type = component.props.type;
+    var current_reading = component.props.current_reading;
+    var reading_at = new Date(Date.parse(component.props.reading_at));
 
     var now = new Date(); 
     var diff = now.getTime() - reading_at.getTime();
@@ -31,19 +32,30 @@ var Sensor = React.createClass({
     
     // format timestamp
     var dateTimeStampUI = 'Last Updated: ';
-    if(this.state.hover) {
+    var plural = 's';
+    if(component.state.hover) {
       dateTimeStampUI = reading_at.toString();
     }else{
       if(diff/ day > 1) { // over a day
-        dateTimeStampUI += Math.round(diff/ day) +' Days Ago';
+        var age = Math.round(diff/ day);
+        if(age < 2) {plural = '';}
+        dateTimeStampUI += age + ' Day' + plural + ' Ago';
       }else if(diff/ hour > 1) { // over an hour
-        dateTimeStampUI += Math.round(diff/ hour) +' Hours Ago';
+        var age = Math.round(diff/ hour);
+        if(age < 2) {plural = '';}
+        dateTimeStampUI += age +' Hour' + plural + ' Ago';
       }else if(diff/ min > 1) { // over a min
-        dateTimeStampUI += Math.round(diff/ min) +' Mins Ago';
-      }else if(diff/ sec > 1) { // over a seconds
-        dateTimeStampUI += Math.round(diff/ sec) +' Seconds Ago';
+        var age = Math.round(diff/ min);
+        if(age < 2) {plural = '';}
+        dateTimeStampUI += age +' Minute' + plural + ' Ago';
+      }else if(diff/ sec > 1) { // over a sec
+        //setInterval(component.render, 1000); // re-render every second so the ui counts down seconds
+        var age = Math.round(diff/ sec);
+        if(age < 2) {plural = '';}              
+        dateTimeStampUI += age +' Second' + plural + ' Ago'; 
       }else { // default future
         dateTimeStampUI += 'In the future!?';
+        //setInterval(component.render, 1000); // re-render every second so the ui counts down seconds **might want to limit this if its really far in the future.
         console.log('Unexpected sensor reading date - reading in the future. SensorId: '+id+' read_at: '+ reading_at);
       }
     }
@@ -62,7 +74,7 @@ var Sensor = React.createClass({
         <div>
           <span className="sensor-temperature">{current_reading} ºF</span>
           <br/>
-          <span className="sensor-timestamp" onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
+          <span className="sensor-timestamp" onMouseEnter={component.onMouseEnterHandler} onMouseLeave={component.onMouseLeaveHandler}>
             {dateTimeStampUI}
           </span>
         </div>
@@ -106,7 +118,8 @@ var Main = React.createClass({
     var allSensors = this.state.sensors.map(function(sensorData) {
       return (
         <Sensor 
-          key={sensorData.id} 
+          key={sensorData.id} // to please the react gods
+          id={sensorData.id} 
           name={sensorData.name}
           type={sensorData.sensortype.name}
           current_reading={sensorData.current_reading}
