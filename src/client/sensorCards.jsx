@@ -2,16 +2,34 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var socket = io(); // should i be passing this bundled?
 
-//Sensor
+// Sensor
 var Sensor = React.createClass({
   getInitialState: function() {
-    return {hover: false};
+    var reading_at = new Date(Date.parse(this.props.reading_at));
+    var now = new Date(); 
+    var secondsElapsed = Math.floor((now.getTime() - reading_at.getTime()) / 1000);
+    return {hover: false, secondsElapsed: secondsElapsed, reading_at: reading_at};
   },
   onMouseEnterHandler: function() {
     this.setState({hover: true});
   },
   onMouseLeaveHandler: function() {
     this.setState({hover: false});
+  },
+  componentDidMount: function() {
+    this.interval = setInterval(this.tick, 1000);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);    
+  },
+  tick: function() {
+    this.setState({secondsElapsed: this.state.secondsElapsed + 1});
+  },
+  componentWillReceiveProps: function() {
+    var reading_at = new Date(Date.parse(this.props.reading_at));
+    var now = new Date(); 
+    var secondsElapsed = Math.floor((now.getTime() - reading_at.getTime()) / 1000);
+    this.setState({secondsElapsed: secondsElapsed, reading_at: reading_at});
   },
   render: function() {
     var component = this;
@@ -20,43 +38,54 @@ var Sensor = React.createClass({
     var name = component.props.name;
     var type = component.props.type;
     var current_reading = component.props.current_reading;
-    var reading_at = new Date(Date.parse(component.props.reading_at));
+    var reading_at = component.state.reading_at.toString();
+    var secondsElapsed = component.state.secondsElapsed;
 
-    var now = new Date(); 
-    var diff = now.getTime() - reading_at.getTime();
-    
-    var day = (24*60*60*1000);
-    var hour = (60*60*1000);
-    var min = (60*1000);
-    var sec = (1000);
-    
-    // format timestamp
+    var sec = (1);
+    var min = (60 * sec);
+    var hour = (60 * min);
+    var day = (24 * hour);
+
     var dateTimeStampUI = 'Last Updated: ';
-    var plural = 's';
     if(component.state.hover) {
-      dateTimeStampUI = reading_at.toString();
-    }else{
-      if(diff/ day > 1) { // over a day
-        var age = Math.round(diff/ day);
-        if(age < 2) {plural = '';}
-        dateTimeStampUI += age + ' Day' + plural + ' Ago';
-      }else if(diff/ hour > 1) { // over an hour
-        var age = Math.round(diff/ hour);
-        if(age < 2) {plural = '';}
-        dateTimeStampUI += age +' Hour' + plural + ' Ago';
-      }else if(diff/ min > 1) { // over a min
-        var age = Math.round(diff/ min);
-        if(age < 2) {plural = '';}
-        dateTimeStampUI += age +' Minute' + plural + ' Ago';
-      }else if(diff/ sec > 0) { // over a sec
-        //setInterval(component.render, 1000); // re-render every second so the ui counts down seconds
-        var age = Math.round(diff/ sec);
-        if(age < 2) {plural = '';}              
-        dateTimeStampUI += age +' Second' + plural + ' Ago'; 
-      }else { // default future
-        dateTimeStampUI += 'In the future!?';
-        //setInterval(component.render, 1000); // re-render every second so the ui counts down seconds **might want to limit this if its really far in the future.
-        console.log('Unexpected sensor reading date - reading in the future. SensorId: '+id+' read_at: '+ reading_at);
+      // display timestamp
+      dateTimeStampUI = reading_at;
+    }else{      
+      // display time since last update
+      var age = '';
+      var increment = '';
+
+      // over a day
+      if(secondsElapsed > day) { 
+        age = Math.floor(secondsElapsed/ day);
+        increment = 'Day';
+
+      // over an hour
+      }else if(secondsElapsed > hour) {
+        age = Math.floor(secondsElapsed/ hour);
+        increment = 'Hour';
+
+      // over a min
+      }else if(secondsElapsed > min) {
+        age = Math.floor(secondsElapsed/ min);
+        increment = 'Minute';
+
+      // over a sec
+      }else if(secondsElapsed > sec) {
+        age = Math.floor(secondsElapsed/ sec);
+        increment = 'Second';
+
+      }else { // less than a sec
+        age = Math.floor(secondsElapsed/ sec);
+        increment = 'Second';
+        console.log('Unexpected sensor reading date - reading in the future. ('+age+') SensorId: '+id+' read_at: '+ reading_at);
+      }
+
+      // build final with plural check
+      if(age > 1 || age <= 0) {
+        dateTimeStampUI += age + ' ' + increment + 's Ago';
+      }else {
+        dateTimeStampUI += age + ' ' + increment + ' Ago';
       }
     }
 
@@ -102,9 +131,6 @@ var Main = React.createClass({
     });
   },
   processesNewReading: function(message) {
-      var component = this;
-
-      // create new state obj
       var sensors = this.state.sensors; 
       for(let sensor of sensors) {
           if(sensor.id === message.id) {
@@ -135,5 +161,5 @@ var Main = React.createClass({
   }
 });
 
-//Render
+// Render
 ReactDOM.render(<Main socketObj={socket} />, document.getElementById("root"));
