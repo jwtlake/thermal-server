@@ -54,6 +54,13 @@ var Sensor = React.createClass({
       // display time since last update
       var age = '';
       var increment = '';
+      var inTheFuture = false;
+      
+      //handle future dates
+      if(secondsElapsed < 0) {
+        secondsElapsed *= -1;
+        inTheFuture = true;
+      }
 
       // over a day
       if(secondsElapsed > day) { 
@@ -78,14 +85,23 @@ var Sensor = React.createClass({
       }else { // less than a sec
         age = Math.floor(secondsElapsed/ sec);
         increment = 'Second';
-        console.log('Unexpected sensor reading date - reading in the future. ('+age+') SensorId: '+id+' read_at: '+ reading_at);
+        console.log('Unexpected sensor reading date - reading fell through if statments. [SensorId: ' + id + ' SecondsElapsed: ' + secondsElapsed + ' Age: ' + age + '  read_at: ' + reading_at + ']');
       }
 
       // build final with plural check
-      if(age > 1 || age <= 0) {
-        dateTimeStampUI += age + ' ' + increment + 's Ago';
-      }else {
-        dateTimeStampUI += age + ' ' + increment + ' Ago';
+      dateTimeStampUI += age + ' ' + increment;
+
+      // check for plurals
+      if(age > 1) {
+        dateTimeStampUI += 's';
+      }
+
+      // set tense
+      if(inTheFuture) {
+        dateTimeStampUI += ' In The Future?!';
+        console.log('Unexpected sensor reading date - reading in the future. [SensorId: ' + id + ' SecondsElapsed: ' + secondsElapsed + ' Age: ' + age + '  read_at: ' + reading_at + ']');
+      }else{
+        dateTimeStampUI += ' Ago';
       }
     }
 
