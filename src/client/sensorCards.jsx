@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var socket = io(); // should i be passing this bundled?
 
 // Sensor
@@ -117,13 +118,24 @@ var Sensor = React.createClass({
           </div>
         </div>
         <div>
-          <span className="sensor-temperature">{current_reading} ºF</span>
+          <ReactCSSTransitionGroup transitionName="cross-fade" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+            <SensorReading key={id} current_reading={current_reading} />
+          </ReactCSSTransitionGroup>
           <br/>
           <span className="sensor-timestamp" onMouseEnter={component.onMouseEnterHandler} onMouseLeave={component.onMouseLeaveHandler}>
             {dateTimeStampUI}
           </span>
         </div>
       </div>
+    );
+  }
+});
+
+// SensorReading
+var SensorReading = React.createClass({
+  render: function() {
+    return(
+        <span className="sensor-temperature">{this.props.current_reading} ºF</span>
     );
   }
 });
