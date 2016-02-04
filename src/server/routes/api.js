@@ -11,7 +11,7 @@ module.exports = [
 
 //** Sensor Type
 	{
-		path: '/api/sensorstypes',
+		path: '/api/sensortypes',
 		method: 'GET',
 		handler: sensorTypeController.list
 	},
