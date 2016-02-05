@@ -26,6 +26,7 @@
     "react": "^0.14.6",
     "react-addons-css-transition-group": "^0.14.6",
     "react-dom": "^0.14.6",
+    "react-transitive-number": "^2.0.1",
     "socket.io": "^1.4.4"
   },
   "devDependencies": {

@@ -37,24 +37,18 @@
   font-style: oblique;
 }
 
-
-
-.cross-fade-leave {
-  opacity: 1;
-}
-.cross-fade-leave.cross-fade-leave-active {
-  opacity: 0;
-  transition: opacity 1s ease-in;
+.sensor-arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid white;
 }
 
-.cross-fade-enter {
-  opacity: 0;
-}
-.cross-fade-enter.cross-fade-enter-active {
-  opacity: 1;
-  transition: opacity 1s ease-in;
-}
-
-.cross-fade-height {
-  transition: height .5s ease-in-out;
+.sensor-arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
 }
