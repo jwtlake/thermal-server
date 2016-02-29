@@ -31,7 +31,13 @@ var Sensor = React.createClass({
   componentWillReceiveProps: function() {
     var reading_at = new Date(Date.parse(this.props.reading_at));
     var now = new Date(); 
-    var secondsElapsed = Math.floor((now.getTime() - reading_at.getTime()) / 1000);
+
+    //calculate elapsed seconds
+    var timeDiff = now - reading_at; // time difference in ms
+    timeDiff /= 1000; // strip the miliseconds
+    var secondsElapsed = Math.round(timeDiff % 60);
+
+    //update state
     this.setState({secondsElapsed: secondsElapsed, reading_at: reading_at});
   },
   render: function() {
@@ -52,7 +58,7 @@ var Sensor = React.createClass({
     var dateTimeStampUI = 'Last Updated: ';
     if(component.state.hover) {
       // display timestamp
-      dateTimeStampUI = reading_at;
+      dateTimeStampUI += reading_at;
     }else{      
       // display time since last update
       var age = '';
@@ -67,26 +73,26 @@ var Sensor = React.createClass({
 
       // over a day
       if(secondsElapsed > day) { 
-        age = Math.floor(secondsElapsed/ day);
+        age = Math.floor(secondsElapsed / day);
         increment = 'Day';
 
       // over an hour
       }else if(secondsElapsed > hour) {
-        age = Math.floor(secondsElapsed/ hour);
+        age = Math.floor(secondsElapsed / hour);
         increment = 'Hour';
 
       // over a min
       }else if(secondsElapsed > min) {
-        age = Math.floor(secondsElapsed/ min);
+        age = Math.floor(secondsElapsed / min);
         increment = 'Minute';
 
-      // over a sec
-      }else if(secondsElapsed > sec) {
-        age = Math.floor(secondsElapsed/ sec);
+      // over a sec OR zero seconds
+      }else if(secondsElapsed >= sec || secondsElapsed == 0) {
+        age = Math.floor(secondsElapsed / sec);
         increment = 'Second';
 
       }else { // less than a sec
-        age = Math.floor(secondsElapsed/ sec);
+        age = Math.floor(secondsElapsed / sec);
         increment = 'Second';
         console.log('Unexpected sensor reading date - reading fell through if statments. [SensorId: ' + id + ' SecondsElapsed: ' + secondsElapsed + ' Age: ' + age + '  read_at: ' + reading_at + ']');
       }
@@ -111,7 +117,7 @@ var Sensor = React.createClass({
     return (
       <div className="sensor-card">
         <div className="sensor-row">
-          <div className="sensor-block" >
+          <div className="sensor-block">
             <img src="http://www.gdsinstruments.com/__assets__/WebPages/00226/temperature-controlled.jpg" width="50"/>
           </div>
           <div className="sensor-block">
