@@ -28,14 +28,10 @@ var Sensor = React.createClass({
   tick: function() {
     this.setState({secondsElapsed: this.state.secondsElapsed + 1});
   },
-  componentWillReceiveProps: function() {
-    var reading_at = new Date(Date.parse(this.props.reading_at));
+  componentWillReceiveProps: function(nextProps) {
+    var reading_at = new Date(Date.parse(nextProps.reading_at));
     var now = new Date(); 
-
-    //calculate elapsed seconds
-    var timeDiff = now - reading_at; // time difference in ms
-    timeDiff /= 1000; // strip the miliseconds
-    var secondsElapsed = Math.round(timeDiff % 60);
+    var secondsElapsed = Math.floor((now.getTime() - reading_at.getTime()) / 1000);
 
     //update state
     this.setState({secondsElapsed: secondsElapsed, reading_at: reading_at});
@@ -95,7 +91,7 @@ var Sensor = React.createClass({
         age = Math.floor(secondsElapsed / sec);
         increment = 'Second';
         console.log('Unexpected sensor reading date - reading fell through if statments. [SensorId: ' + id + ' SecondsElapsed: ' + secondsElapsed + ' Age: ' + age + '  read_at: ' + reading_at + ']');
-      }
+        }
 
       // build final with plural check
       dateTimeStampUI += age + ' ' + increment;
