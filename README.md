@@ -1,7 +1,18 @@
 # thermal-server
 
 ## Purpuse
-Server for logging home temperature.
+Server for logging and reporting on home temperature. The server provides a RESTFull API for the [thermal-sensor](https://github.com/jwtlake/thermal-sensor) project to report to. The server also provides a dashboard UI for monitoring current temerature readings. API has already been implimented to report on historical readings but I'm still in the proccess of developing the front end.
+
+## Live Demo!
+http://www.jwtlake.com/home
 
 ## Usage
-ToDo... 
+See To Do
+
+## To Do
+- Implement [victory](https://github.com/FormidableLabs/victory) for historical readings graphs
+- Tests!! (Could have saved myself many hours if I would have started with some. haha...)
+- Add Usage section to ReadMe
+- Fully implement sensor key functionality (client should make a request for a server api key and server should have some way of acccepting)
+- Add server side rendering of react components for initial render
+- Lots more im sure... 
