@@ -1,9 +1,14 @@
-// var path = require('path');
 var webpack = require('webpack');
  
 module.exports = {
-  entry: './src/client/main.js',
-  output: { path: './src/client/', filename: 'bundle.js' },
+  entry: './src/client/index.js',
+  output: { 
+    path: './src/client/public', 
+    filename: 'bundle.js' 
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
   module: {
     loaders: [
       {
@@ -11,7 +16,8 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
+          // plugins: ["transform-object-rest-spread","transform-class-properties"],
+          presets: ['es2015', 'react','stage-0']
         }
       }
     ]

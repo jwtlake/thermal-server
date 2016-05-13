@@ -21,12 +21,13 @@ var Sensor = bookshelf.Model.extend({
 
 		// on sensor table update, trigger update event
 		this.on('updated', function(model) {
-			var message = {
-				id: model.attributes.id,
-				current_reading: model.attributes.current_reading,
+			var NewReading = {
+				id: null, //this is kinda tricky because im getting the sensor object not the reading object
+				sensor_id: model.attributes.id,
+				temperature: model.attributes.current_reading,
 				reading_at: model.attributes.reading_at
 			}
-			Events.update(message);
+			Events.update(NewReading);
 		});
 	}
 });

@@ -6,38 +6,20 @@ var api = require(appRoot + '/src/server/routes/api');
 //** Controllers Array**//
 var controllers = [];
 
-// var jsx = require(appRoot + '/src/client/script.jsx');
-// console.log(jsx);
-
-
 /** Common Routes **/ 
 var common = [
 	{
-		path: '/',
 		method: 'GET',
-		handler: function(request, reply){
-			reply('What up!');
-		}
-	},
-	{
-		method: 'GET',
-		path: '/home',
+		path: '/{path*}',
 		handler: function (request, reply) {
-			reply.file(appRoot + '/src/client/index.html');
-		}
-	},
-	{
-		method: 'GET',
-		path: '/style.css',
-		handler: function (request, reply) {
-			reply.file(appRoot + '/src/client/style.css');
+			reply.file(appRoot + '/src/client/public/index.html');
 		}
 	},
 	{
 		method: 'GET',
 		path: '/bundle.js',
 		handler: function (request, reply) {
-			reply.file(appRoot + '/src/client/bundle.js');
+			reply.file(appRoot + '/src/client/public/bundle.js');
 		}
 	}
 ];
