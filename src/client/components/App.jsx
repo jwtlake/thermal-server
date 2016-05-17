@@ -2,13 +2,13 @@ import React from 'react';
 import { Link, browserHistory } from 'react-router';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import AppTheme from './AppTheme';
 import AppBar from 'material-ui/AppBar';
 import AppDrawer from './AppDrawer';
 
-injectTapEventPlugin();
+// import injectTapEventPlugin from 'react-tap-event-plugin';
+// injectTapEventPlugin();
 
 export default class App extends React.Component {
   

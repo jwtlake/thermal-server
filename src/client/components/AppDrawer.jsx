@@ -32,7 +32,7 @@ export default class AppDrawer extends React.Component {
   render() {
     return (
       <div>
-        <IconButton onTouchTap={this.handleToggle}> 
+        <IconButton onClick={this.handleToggle}> 
           <MenuIcon color={white}/> 
         </IconButton>
         <Drawer 
@@ -41,12 +41,12 @@ export default class AppDrawer extends React.Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-          <MenuItem primaryText="Login" linkButton="true" containerElement={<Link to="/login" />} disabled={true} onTouchTap={this.handleClose} leftIcon={<AccountCircleIcon />}/>
+          <MenuItem primaryText="Login" linkButton="true" containerElement={<Link to="/login" />} disabled={true} onClick={this.handleClose} leftIcon={<AccountCircleIcon />}/>
           <Divider />
-          <MenuItem primaryText="Dashboard" linkButton="true" containerElement={<Link to="/dashboard" />} onTouchTap={this.handleClose} leftIcon={<DvrIcon />}/>
-          <MenuItem primaryText="Trends" linkButton="true" containerElement={<Link to="/trends" />} onTouchTap={this.handleClose} leftIcon={<MultilineChartIcon />}/>
+          <MenuItem primaryText="Dashboard" linkButton="true" containerElement={<Link to="/dashboard" />} onClick={this.handleClose} leftIcon={<DvrIcon />}/>
+          <MenuItem primaryText="Trends" linkButton="true" containerElement={<Link to="/trends" />} onClick={this.handleClose} leftIcon={<MultilineChartIcon />}/>
           <Divider />
-          <MenuItem primaryText="Alerts" linkButton="true" containerElement={<Link to="/alerts" />} disabled={true} onTouchTap={this.handleClose} leftIcon={<NotificationsIcon />}/>
+          <MenuItem primaryText="Alerts" linkButton="true" containerElement={<Link to="/alerts" />} disabled={true} onClick={this.handleClose} leftIcon={<NotificationsIcon />}/>
         </Drawer>
       </div>
     );
