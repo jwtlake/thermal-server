@@ -47,16 +47,15 @@ fetch('/api/sensors').then(function(response) {
 	return response.json();
 })
 .then(function(json) {
-	// var normalizedJson = normalize(json, arrayOf(sensor));
   	store.dispatch(loadSensors(json));
 });
 
-
+// Get things manualy for now
 setTimeout(() => {
-  store.dispatch(getReadings_Async('1'));
-  store.dispatch(getReadings_Async('2'));
+  store.getState().get('sensors').forEach(sensor => {
+    store.dispatch(getReadings_Async(sensor.get('id').toString()));
+  })
 },2000);
-
 
 // // Debug - Log changes to store
 // let unsubscribe = store.subscribe(() => {
@@ -64,7 +63,6 @@ setTimeout(() => {
 //   console.log(store.getState().get('readings').toJS())
 //   }
 // );
-
 
 // setTimeout(() => {
 //   store.dispatch(newReading(createRandomReading(1)));
