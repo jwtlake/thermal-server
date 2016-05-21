@@ -28,3 +28,22 @@ Events.startSocketListener(server.listener);
 server.start(function () {
 	console.log('Server listening @ ' + server.info.uri);
 });
+
+
+// Debug - Simulate readings
+// var readingcontroller = require(appRoot + '/src/server/controllers/reading');
+// setInterval(() => {
+//   const sensorId = Math.floor(Math.random() * 2) + 1;
+//   readingcontroller.create(createRandomReading(sensorId),function(){return {code: function (){}} });
+// },10000);
+
+// function createRandomReading(sensorId) {
+//   const now = new Date();
+//   return {
+//   	params: {id: sensorId},
+//   	payload: {
+//   		temperature: (Math.floor(Math.random() * (110 - 55 + 1)) + 55).toString(),
+//   		readingtime: new Date()
+//   	}
+//   }
+// }

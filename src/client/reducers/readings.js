@@ -5,12 +5,12 @@ const initialState = Map();
 
 function readings(state = initialState, action) {
   switch (action.type) {
-    // case types.GET_READINGS:
-    //   return state;
+    case types.LOAD_READINGS:
+      return state.updateIn(action.sensorId, readings => readings.merge(fromJS(action.readings)));
 
     case types.LOAD_SENSORS: // overwrites existing readings and creats map keys for each sensor
       const sensors = fromJS(action.sensors);
-      return sensors.reduce( (map, sensor) => map.set( sensor.get('id').toString(), List() ), Map() )
+      return sensors.reduce( (map, sensor) => map.set( sensor.get('id').toString(), fromJS([{id: null, sensor_id: sensor.get('id'), temperature: sensor.get('current_reading'), reading_at: sensor.get('reading_at')}]) ), Map() )
 
     case types.NEW_READING: // handle socket.io push style reading updates
       const newReading = fromJS(action.reading);

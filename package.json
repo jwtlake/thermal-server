@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jwtlake/thermal-server#readme",
   "dependencies": {
     "bookshelf": "^0.9.1",
+    "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
     "hapi": "^13.4.0",
     "immutable": "^3.8.1",
@@ -31,7 +32,8 @@
     "moment": "^2.13.0",
     "nconf": "^0.8.2",
     "pg": "^4.4.3",
-    "react": "^15.0.0",
+    "rd3": "^0.6.3",
+    "react": "^15.0.2",
     "react-addons-pure-render-mixin": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-immutable-proptypes": "^1.7.1",
@@ -41,9 +43,9 @@
     "react-transitive-number": "^3.0.0",
     "redux": "^3.5.2",
     "redux-immutable": "^3.0.6",
+    "redux-thunk": "^2.1.0",
     "socket.io": "^1.4.4",
-    "socket.io-client": "^1.4.5",
-    "victory": "^0.6.1"
+    "socket.io-client": "^1.4.5"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",

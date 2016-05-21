@@ -2,13 +2,12 @@ import React from 'react';
 import { Link, browserHistory } from 'react-router';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 import AppTheme from './AppTheme';
 import AppBar from 'material-ui/AppBar';
 import AppDrawer from './AppDrawer';
 
-// import injectTapEventPlugin from 'react-tap-event-plugin';
-// injectTapEventPlugin();
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 export default class App extends React.Component {
   
@@ -28,16 +27,3 @@ export default class App extends React.Component {
     );
   }
 };
-
-
-// import IconMenu from 'material-ui/IconMenu';
-// import MenuItem from 'material-ui/MenuItem';
-// import IconButton from 'material-ui/IconButton/IconButton';
-
-// import {white} from 'material-ui/styles/colors';
-
-// import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-
-// import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-// import TimelineIcon from 'material-ui/svg-icons/action/timeline';
-// import SettingsRemoteIcon from 'material-ui/svg-icons/action/settings-remote';

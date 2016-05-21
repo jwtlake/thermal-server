@@ -1,7 +1,11 @@
 import React from 'react';
-import { VictoryChart, VictoryAxis, VictoryLine } from "victory";
-// import Line from './Line';
-import moment from 'moment';
+import rd3 from 'rd3';
+import d3 from 'd3';
+
+import Filter from './filter';
+
+const parseDate = d3.time.format.iso.parse;
+const LineChart = rd3.LineChart;
 
 class HistoryChart extends React.Component {
 
@@ -10,36 +14,59 @@ class HistoryChart extends React.Component {
 			props: { sensors, readings }
 		} = this;
 
+		const lineData = sensors.reduce((array,sensor) => {
+			const readings = this.props.readings.get(sensor.get('id').toString()).toJS()
+			return array.concat({
+			 	name: sensor.get('name'),
+			 	values: readings.map(reading => {
+			 		return({
+						x: reading.reading_at,
+			 			y: reading.temperature
+			 		});
+			 	}) 
+			});
+		},[])
+
 		return(
-			<VictoryChart animate={{duration: 200}}>
-			  <VictoryAxis dependentAxis label="Temperature"  />
-			  <VictoryAxis 				  
-			  	  scale="time"
-				  // tickValues={[
-				  //   new Date(1980, 1, 1),
-				  //   new Date(1990, 1, 1),
-				  //   new Date(2000, 1, 1),
-				  //   new Date(2010, 1, 1),
-				  //   new Date(2020, 1, 1)]}
-				    tickFormat={(x) => {
-				    	moment(x).format('MM/DD/YYYY h:mm a');
-				    }}
-    		  />
-				{
-					sensors.map(sensor => {
-						const sensorReadings = readings.get(sensor.get('id').toString()).toJS();
-						const sensorReadingsLimited = sensorReadings.slice(-200);
-						return (
-							<VictoryLine 
-								key={sensor.get('id')}
-								data={sensorReadingsLimited}
-								x={"reading_at"}
-								y={"temperature"} 
-							/>
-						);
-					})
+			<LineChart
+				circleRadius={0}
+				title="Today"
+				legend={true}
+				data={lineData}
+				width='100%'
+				height={400}
+				viewBoxObject={{
+					x: 0,
+					y: 0,
+					width: '700',
+					height: 400
+				}}
+
+				//Y Axis
+				yAxisLabel="Temperature"
+  				yAxisTickIntervel={{interval: 5}}
+  				// yAxisTickValues
+  			    yAxisLabelOffset={60}
+  				yAxisFormatter={(d)=> { return d + ' ºF' }}
+  				yAccessor={(d)=> {
+  					//return d.temperature;
+  					return d.y;
+  					}
+  				}
+
+  				//X Axis
+				xAxisLabel="Time"
+  				xAxisTickInterval={{unit: 'hour'}}
+				xAccessor={(d)=> {
+					//return parseDate(d.reading_at);
+					return parseDate(d.x);
+					}     
 				}
-			</VictoryChart>
+				
+  				domain={{ y: [-30,120]}} //x: [,0]
+				// gridHorizontal={true}
+				// gridVertical={true}
+			/>
 		);
 	}
 };
@@ -47,4 +74,17 @@ class HistoryChart extends React.Component {
 // Export
 export default HistoryChart;
 
-// tickValues={[0,25,50,75,100]}
+// filterReadings(readings,'today')
+// function filterReadings(readings, filterOption){
+// 	//ADD filterOption
+// 	return readings.filter(reading => {	
+// 		const d = new Date(reading.reading_at);
+// 		const now = new Date();
+
+// 		if(d.toDateString() === now.toDateString()){
+// 			return true;
+// 		}else{
+// 			return false;
+// 		}
+// 	})
+// }
