@@ -2,8 +2,6 @@ import React from 'react';
 import rd3 from 'rd3';
 import d3 from 'd3';
 
-import Filter from './filter';
-
 const parseDate = d3.time.format.iso.parse;
 const LineChart = rd3.LineChart;
 
