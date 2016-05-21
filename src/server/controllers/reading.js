@@ -25,10 +25,10 @@ module.exports = {
 			qb.query().andWhere('reading_at','<=',end);
 		}
 
-		if(orderBy === 'asc') {
-			qb.query().orderBy('reading_at','asc');
-		} else {
+		if(orderBy === 'desc') {
 			qb.query().orderBy('reading_at','desc');
+		} else {
+			qb.query().orderBy('reading_at','asc');
 		}
 
 		// execute query
