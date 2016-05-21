@@ -22,8 +22,6 @@ describe('Store', () => {
             const app = state.get('app');
             const isImmutableMap = Map.isMap(app);
 
-            // const expectedState = fromJS({});
-
             expect(isImmutableMap).to.equal(true); //is Immutable.Map
             expect(app).to.equal(Map()); //empty list
         });

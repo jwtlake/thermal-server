@@ -283,9 +283,60 @@ describe('Reducers', () => {
                         }
                       }
                   ];
+                  const result = readingsReducer(initialState,loadSensorCreator(newSensorList));
+                  expect(List.isList(result.get('1'))).to.equal(true);
+                  expect(List.isList(result.get('2'))).to.equal(true);
+                });
+
+                it('adds the current_reading to the readings List', ()=> {
+                  const initialState = Map();
+                  const newSensorList = [  
+                      {  
+                        id:1,
+                        name:"Living Room",
+                        sensor_type_id:1,
+                        api_key:"72f18b5f6f63b572e58c48d19c957b51",
+                        created_at:null,
+                        updated_at:"2016-05-03T03:08:12.876Z",
+                        current_reading:"122.00",
+                        reading_at:"2016-05-28T23:52:08.000Z",
+                        sensortype:{  
+                           id:1,
+                           name:"Local",
+                           created_at:null,
+                           updated_at:null
+                        }
+                      },
+                      {  
+                        id:2,
+                        name:"Lake Oswego",
+                        sensor_type_id:2,
+                        api_key:"72f18b5f6f63b572e58c48d19c957b52",
+                        created_at:null,
+                        updated_at:"2016-05-03T16:36:37.224Z",
+                        current_reading:"92.00",
+                        reading_at:"2016-05-28T23:55:12.000Z",
+                        sensortype:{  
+                           id:2,
+                           name:"External",
+                           created_at:null,
+                           updated_at:null
+                        }
+                      }
+                  ];
                   const expectedResult = fromJS({
-                    '1': List(),
-                    '2': List()
+                    '1': [{
+                      id: null,
+                      sensor_id: 1,
+                      temperature: "122.00",
+                      reading_at: "2016-05-28T23:52:08.000Z"
+                    }],
+                    '2': [{
+                      id: null,
+                      sensor_id: 2,
+                      temperature: "92.00",
+                      reading_at: "2016-05-28T23:55:12.000Z"
+                    }]
                   });                  
                   expect(readingsReducer(initialState,loadSensorCreator(newSensorList))).to.equal(expectedResult);
                 });     

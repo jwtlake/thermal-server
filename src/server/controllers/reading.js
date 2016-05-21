@@ -12,7 +12,7 @@ module.exports = {
 		var start = request.query.start;
 		var end = request.query.end;
 		var orderBy = request.query.orderBy;
-
+		
 		// default query
 		var qb = new models.Reading().query({where:{sensor_id:id}});		
 		
@@ -25,10 +25,10 @@ module.exports = {
 			qb.query().andWhere('reading_at','<=',end);
 		}
 
-		if(orderBy === 'asc') {
-			qb.query().orderBy('reading_at','asc');
-		} else {
+		if(orderBy === 'desc') {
 			qb.query().orderBy('reading_at','desc');
+		} else {
+			qb.query().orderBy('reading_at','asc');
 		}
 
 		// execute query
@@ -46,7 +46,7 @@ module.exports = {
 		var temperature = request.payload.temperature;
 		var readingtime = new Date(request.payload.readingtime);
 
-		console.log('new report post id: '+ id + ' temp: '+ temperature + ' time: '+ readingtime);
+		// console.log('new report post id: '+ id + ' temp: '+ temperature + ' time: '+ readingtime);
 
 		var newReading = {
 			sensor_id: id,
