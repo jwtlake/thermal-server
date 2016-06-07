@@ -31,7 +31,7 @@ const styles = {
     marginTop: '10px',
     marginLeft: '10px',
     background: '#3498db',
-    width: '350px',
+    maximumWidth: '350px',
     borderRadius: '3px',
     color: 'white'
   },
