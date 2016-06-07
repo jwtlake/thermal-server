@@ -28,10 +28,11 @@ Moment.locale('precise-en'); //set new locale
 const styles = {
   sensorCard: {
     padding: '10px 40px',
-    marginTop: '10px',
-    marginLeft: '10px',
+    marginTop: '8px',
+    marginLeft: '8px',
+    marginRight: '8px',
     background: '#3498db',
-    maximumWidth: '350px',
+    maxWidth: '350px',
     borderRadius: '3px',
     color: 'white'
   },
