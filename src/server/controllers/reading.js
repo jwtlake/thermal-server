@@ -36,7 +36,11 @@ module.exports = {
 			// withRelated: ['sensor'],
 			require: true //only trigger then if we find a result
 		}).then(function(readings) {
-			reply(readings).code(200);
+			reply(
+				removeUnchangedReadings(
+					readings.toJSON()
+				)
+			).code(200);
 		}, function(err) {
 			reply('Failed to Get '+ err).code(500);
 		});
@@ -113,4 +117,26 @@ module.exports = {
 			reply('Failed to Delete: '+ err).code(500);
 		});
 	}
+}
+
+// Filter functions
+function removeUnchangedReadings(readings) {
+	return(
+		readings.reduce(function(array, nextReading){
+			var lastReading = array[array.length - 1]; 
+			if(typeof lastReading === 'undefined' || nextReading.temperature !== lastReading.temperature) {
+				// add new readings for the first reading or a changed reading
+				array.push(nextReading);
+				return array;
+			}else{
+				// in the case of repeated/ unchanged temperatues keep records for the start and end time of the given temperatue.
+				var secondToLastReading = array[array.length - 2];
+				if(typeof secondToLastReading !== 'undefined' && lastReading.temperature === secondToLastReading.temperature) {
+					array.pop();
+				}
+				array.push(nextReading);
+				return array;
+			}
+		}, [])
+	);
 }
