@@ -2,8 +2,8 @@ exports.seed = function(knex, Promise) {
 
 	var tblName = 'sensor_type';
 	var rows = [
-		{ name: 'Local' }, //id = 1
-		{ name: 'External' } //id = 2
+		{ name: 'Local', created_at: new Date(), updated_at: new Date() }, //id = 1
+		{ name: 'External', created_at: new Date(), updated_at: new Date() } //id = 2
 	];
 
 	return knex(tblName)

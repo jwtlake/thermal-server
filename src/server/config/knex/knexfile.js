@@ -1,6 +1,7 @@
 'use strict';
 
-var settings = require('./src/server/config/settings');
+/** dependencies **/ 
+var settings = require('../settings');
 
 module.exports = {
   development: {
