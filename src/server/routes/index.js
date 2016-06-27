@@ -10,16 +10,23 @@ var controllers = [];
 var common = [
 	{
 		method: 'GET',
-		path: '/{path*}',
+		path: '/bundle.js',
 		handler: function (request, reply) {
-			reply.file(appRoot + '/src/client/public/index.html');
+			reply.file(appRoot + '/src/client/public/bundle.js');
 		}
 	},
 	{
 		method: 'GET',
-		path: '/bundle.js',
+		path: '/index.css',
 		handler: function (request, reply) {
-			reply.file(appRoot + '/src/client/public/bundle.js');
+			reply.file(appRoot + '/src/client/public/index.css');
+		}
+	},
+	{
+		method: 'GET',
+		path: '/{path*}',
+		handler: function (request, reply) {
+			reply.file(appRoot + '/src/client/public/index.html');
 		}
 	}
 ];
