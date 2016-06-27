@@ -114,7 +114,7 @@ class SensorCard extends React.Component {
         </div>
         <div>
           <span style={ styles.sensorTemperature }>
-            <TransitiveNumber enableInitialAnimation={true}>{ reading }</TransitiveNumber> ºF
+            <TransitiveNumber enableInitialAnimation={true}>{ reading }</TransitiveNumber> °F
           </span>
           <br/>
           <span style={ styles.sensorTimestamp } onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}> 
