@@ -11,7 +11,7 @@ class HistoryChart extends React.Component {
 		} = this;
 
 		// Normalize reading data
-		const data = _normalizeData(sensors, readings);
+		const data = _backFill(_normalizeData(sensors, readings));
 
 		// Get keys for y axis lookup
 		const yAxisFields = sensors.toJS().map(sensor => sensor.id.toString());
@@ -100,3 +100,14 @@ function _normalizeData(sensors, readings){
 
 	return finalReadingData;
 }
+
+function _backFill(data){
+	// ## Temporary fix for chopped up rendering issue. lucid charts assumes each row in the data series has a value
+	// backfill the dataseries with the last recorded sensor reading for all series rows that are missing sensor properties.
+	let previousValues = {};
+	return data.map(record => {
+		previousValues = Object.assign({},previousValues, record);
+		return previousValues;
+	});
+}
+
