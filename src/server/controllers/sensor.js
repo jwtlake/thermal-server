@@ -9,7 +9,7 @@ module.exports = {
 	list: function(request, reply) {
 		new models.Sensor()
 		.fetchAll({
-			withRelated: ['current_reading'],
+			withRelated: ['sensor_type','current_reading'],
 			require: true //only trigger then if we find a result
 		}).then(function(sensor){
 			reply(sensor).code(200);
