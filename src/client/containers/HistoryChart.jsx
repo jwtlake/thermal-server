@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  //not used	
   return {
     getHistory: (id) => {
       console.log('Get History for ID ' + id)
