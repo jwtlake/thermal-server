@@ -20,10 +20,11 @@ function sensors(state = initialState, action) {
 
     case types.NEW_READING: // update sensor with current reading info
       return state.map(sensor =>
-        sensor.get('id') === action.reading.sensor_id ?
+        (sensor.get('id') === action.reading.sensor_id) ?
           sensor.merge(Map({
-            current_reading: action.reading.temperature,
-            reading_at: action.reading.reading_at
+            current_reading_id: action.reading.id,
+	    reading_at: action.reading.reading_at,
+	    current_reading: fromJS(action.reading) //TODO should i get rid of this and just use current_reading_id?
           })):
           sensor
       );

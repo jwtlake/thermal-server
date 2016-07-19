@@ -9,7 +9,7 @@ module.exports = {
 	list: function(request, reply) {
 		new models.Sensor()
 		.fetchAll({
-			withRelated: ['sensortype'],
+			withRelated: ['current_reading'],
 			require: true //only trigger then if we find a result
 		}).then(function(sensor){
 			reply(sensor).code(200);
@@ -20,8 +20,8 @@ module.exports = {
 	get: function(request, reply) {		
 		var id = request.params.id;
 		new models.Sensor({id: id})
-		.fetch({
-			withRelated: ['sensortype'],
+		.fetch({	
+			withRelated: ['sensor_type','current_reading'],
 			require: true //only trigger then if we find a result
 		}).then(function(sensor){
 			reply(sensor).code(200);
@@ -40,7 +40,7 @@ module.exports = {
 			api_key: api_key
 			// created_at: 
 			// updated_at:
-			// current_reading:
+			// current_reading_id:
 			// reading_at:
 		};
 
@@ -60,7 +60,7 @@ module.exports = {
 
 		new models.Sensor({id: id})
 		.fetch({
-			withRelated: ['sensortype'],
+			withRelated: ['sensor_type'],
 			require: true //only trigger if we find a result
 		}).then(function(sensor) {
 			sensor.save({

@@ -20,7 +20,13 @@ var defaults = {
 // set default settings
 nconf.defaults(defaults);
 
-// TODO# add enviorments and hidden connection strings
+// accept command-line args
+nconf.argv();
+
+// accept enviorment vars
+nconf.env({
+	separator:'__'
+});
 
 // export
 module.exports = nconf;

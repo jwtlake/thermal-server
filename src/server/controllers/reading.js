@@ -1,5 +1,3 @@
-/*eslint camelcase:0 */
-
 'use strict';
 
 var models = require(appRoot + '/src/server/models');
@@ -14,7 +12,7 @@ module.exports = {
 		var orderBy = request.query.orderBy;
 		
 		// default query
-		var qb = new models.Reading().query({where:{sensor_id:id}});		
+		var qb = new models.Reading().query({where:{sensor_id:id}});
 		
 		// check for query strings
 		if(start) {
@@ -65,23 +63,24 @@ module.exports = {
 			.save()
 			.then(function(reading) {
 				
-				//update sensor current temp
-				var id = reading.attributes.sensor_id;
-				var newCurrent_reading = reading.attributes.temperature;
-				var newReading_at = reading.attributes.reading_at;
+				//saved Reading values
+				var id = reading.attributes.id;
+				var sensor_id = reading.attributes.sensor_id;
+				var reading_at = reading.attributes.reading_at;
 				
-				new models.Sensor({id: id})
+				//update Sensor to reflect current reading
+				new models.Sensor({id: sensor_id})
 				.fetch({
 					require: true //only trigger if we find a result
 				}).then(function(sensor) {
 					
 					//check if the new reading is more recent then sensor current reading
-					var SensorNewReading_at = sensor.attributes.reading_at;
-					var ReadingNewReading_at = newReading_at;
-					if(typeof SensorNewReading_at === 'undefined'  || ReadingNewReading_at > SensorNewReading_at) {
+					var MostRecent_SensorReading_at = sensor.attributes.reading_at;
+					var New_ReadingReading_at = reading_at;
+					if(typeof MostRecent_SensorReading_at === 'undefined'  || New_ReadingReading_at > MostRecent_SensorReading_at) {
 						sensor.save({
-							current_reading: newCurrent_reading,
-							reading_at: newReading_at
+							current_reading_id: id,
+							reading_at: reading_at
 						})
 						.then(function(sensor) {
 							reply(sensor).code(201);
@@ -120,6 +119,7 @@ module.exports = {
 }
 
 // Filter functions
+// Experiment to see if performance would improve. Function removes unchaged readings before sending data to the client. Should return two readings for each period of unchanged reading. (first reading at x temp and the last reading at x temp)
 function removeUnchangedReadings(readings) {
 	return(
 		readings.reduce(function(array, nextReading){

@@ -29,19 +29,19 @@ class SensorCardList extends React.Component {
     const {
       props: { sensors }
     } = this;
-
+    
     return (
       <div>
-        {sensors.map(sensor =>
-          <SensorCard 
-            key={sensor.get('id')}
-            id={sensor.get('id')}
-            name={sensor.get('name')}
-            type={sensor.getIn(['sensortype','name'])}
-            reading={sensor.get('current_reading')}
-            lastUpdated={sensor.get('reading_at')}
-          />
-        )}
+        {sensors.map(sensor => {
+		return(<SensorCard 
+	            key={sensor.get('id')}
+	            id={sensor.get('id')}
+	            name={sensor.get('name')}
+       		    type={sensor.getIn(['sensor_type','name'])}
+		    reading={sensor.getIn(['current_reading','temperature']) || '--'}
+	       	    lastUpdated={sensor.get('reading_at')}
+	    	/>);
+	})}
       </div>
     );
   }

@@ -5,17 +5,16 @@ const initialState = Map();
 
 function readings(state = initialState, action) {
   switch (action.type) {
-    case types.LOAD_READINGS:
-      return state.updateIn(action.sensorId, readings => readings.merge(fromJS(action.readings)));
+    case types.LOAD_READINGS: // merge historical readings with push readings, historical overwrites push readings.
+      return state.updateIn([action.sensorId,action.id], readings => readings.merge(fromJS(action.readings))); //TODO how is this working again?
 
     case types.LOAD_SENSORS: // overwrites existing readings and creats map keys for each sensor
       const sensors = fromJS(action.sensors);
-      return sensors.reduce( (map, sensor) => map.set( sensor.get('id').toString(), fromJS([{id: null, sensor_id: sensor.get('id'), temperature: sensor.get('current_reading'), reading_at: sensor.get('reading_at')}]) ), Map() )
+      return sensors.reduce( (map, sensor) => map.setIn([sensor.get('id').toString(), sensor.get('current_reading_id').toString()], sensor.get('current_reading')),Map() );
 
     case types.NEW_READING: // handle socket.io push style reading updates
       const newReading = fromJS(action.reading);
-      const sensor_id = newReading.get('sensor_id').toString();
-      return state.updateIn(sensor_id, readings => readings.push(newReading));
+      return state.setIn([ newReading.get('sensor_id').toString(), newReading.get('id').toString() ], newReading);
 
     default: // default return on unknown action type
       return state;

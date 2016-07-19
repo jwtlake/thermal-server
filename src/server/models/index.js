@@ -1,6 +1,3 @@
-/*eslint no-use-before-define:0 */
-//what is this? Makes javascript evaluate everything before running things? 
-
 /** dependencies **/
 var bookshelf = require(appRoot + '/src/server/config/bookshelf');
 var Events = require(appRoot + '/src/server/events');
@@ -9,7 +6,10 @@ var Events = require(appRoot + '/src/server/events');
 var Sensor = bookshelf.Model.extend({
 	tableName: 'sensor',
 	hasTimestamps: true,
-	sensortype: function() { 
+	current_reading: function(){
+		return this.belongsTo(Reading,'current_reading_id');
+	},
+	sensor_type: function() { 
 		return this.belongsTo(SensorType);
 	},
 	readings: function() {
@@ -20,14 +20,26 @@ var Sensor = bookshelf.Model.extend({
 		bookshelf.Model.apply(this, arguments);
 
 		// on sensor table update, trigger update event
-		this.on('updated', function(model) {
-			var NewReading = {
-				id: null, //this is kinda tricky because im getting the sensor object not the reading object
-				sensor_id: model.attributes.id,
-				temperature: model.attributes.current_reading,
-				reading_at: model.attributes.reading_at
-			}
-			Events.update(NewReading);
+		this.on('updated', function(sensor) {
+			//console.log('on update:' + sensor.attributes.current_reading_id);
+
+			// get latest reading
+			new Reading({id: sensor.attributes.current_reading_id})
+			.fetch({
+				require: true //only trigger if we find a result
+			}).then(function(reading) {
+
+				// create new reading data
+				var newReading = {
+					id: reading.attributes.id,
+					sensor_id: reading.attributes.sensor_id,
+					temperature: reading.attributes.temperature,
+					reading_at: reading.attributes.reading_at
+				}
+
+				//send push update to clients
+				Events.update(newReading);
+			});
 		});
 	}
 });
