@@ -29,21 +29,26 @@ server.start(function () {
 	console.log('Server listening @ ' + server.info.uri);
 });
 
-
-// Debug - Simulate readings
-// var readingcontroller = require(appRoot + '/src/server/controllers/reading');
-// setInterval(() => {
-//   const sensorId = Math.floor(Math.random() * 2) + 1;
-//   readingcontroller.create(createRandomReading(sensorId),function(){return {code: function (){}} });
-// },10000);
-
-// function createRandomReading(sensorId) {
-//   const now = new Date();
-//   return {
-//   	params: {id: sensorId},
-//   	payload: {
-//   		temperature: (Math.floor(Math.random() * (110 - 55 + 1)) + 55).toString(),
-//   		readingtime: new Date()
-//   	}
-//   }
-// }
+// debug - simulate readings
+if(settings.get('NODE_ENV') === 'dev') {
+	console.log('Debug Mode On: Starting to simulate readings.');
+	var readingcontroller = require(appRoot + '/src/server/controllers/reading');
+	setInterval(() => {
+		const sensorId = Math.floor(Math.random() * 2) + 1;
+		const newReading = createRandomReading(sensorId);
+		console.log('creating new reading. SensorId: '+ newReading.params.id + ' Temp: ' + newReading.payload.temperature);
+		readingcontroller.create(newReading,function(){return {code: function (){}} });
+	},10000);
+	
+	// function mimics restful api format
+	function createRandomReading(sensorId) {
+		const now = new Date();
+		return {
+			params: {id: sensorId},
+			payload: {
+				temperature: (Math.floor(Math.random() * (110 - 55 + 1)) + 55).toString(),
+				readingtime: new Date()
+			}
+		}
+	}
+}

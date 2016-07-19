@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:prod": "NODE_ENV=prod node index.js",
+    "start:dev": "NODE_ENV=dev nodemon index.js",
     "webpack": "cp ./node_modules/lucid-ui/dist/index.css ./src/client/public && webpack",
     "webpack:watch": "cp ./node_modules/lucid-ui/dist/index.css ./src/client/public && webpack -w",
     "init": "node ./src/server/config/knex/init.js",
@@ -64,6 +66,7 @@
     "chai": "^3.5.0",
     "chai-immutable": "^1.5.4",
     "mocha": "^2.4.5",
+    "nodemon": "^1.9.2",
     "webpack": "^1.13.0"
   }
 }
