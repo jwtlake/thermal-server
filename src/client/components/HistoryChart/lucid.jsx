@@ -73,9 +73,12 @@ function _normalizeData(sensors, readings){
 		
 		// Get readings for sensor
 		const sensorReadings = readings.get(sensor.get('id').toString()).toJS()
-		
+
+		// Flatten readings
+		const sensorReadingsFlat = Object.keys(sensorReadings).map(key => sensorReadings[key])
+
 		// Normalize format
-		const normalizedReadings = sensorReadings.reduce((array,reading) => {
+		const normalizedReadings = sensorReadingsFlat.reduce((array,reading) => {
 			var newReading = {
 				'reading_at': moment(reading.reading_at).startOf('minute').toDate(),
 				[sensor.get('id').toString()]: parseFloat(reading.temperature)
