@@ -7,42 +7,54 @@ export const LOAD_READINGS = 'LOAD_READINGS';
 
 // action creators
 export function loadSensors(sensors) {
-  return {
-    type: LOAD_SENSORS,
-    sensors: sensors
-  };
+	return {
+		type: LOAD_SENSORS,
+		sensors: sensors
+	};
 }
 
 export function newReading(reading) {  
-  return {
-    type: NEW_READING,
-    reading: reading
-  };
+	return {
+		type: NEW_READING,
+		reading: reading
+	};
 }
 
 export function loadReadings(sensorId,readings) {  
-  const action = {
-    type: LOAD_READINGS,
-    sensorId: sensorId,
-    readings: readings
-  };
-  return action;
+	const action = {
+		type: LOAD_READINGS,
+		sensorId: sensorId,
+		readings: readings
+	};
+	return action;
 }
 
-//*** Async Actions ***///
+// async action creators
 import fetch from 'isomorphic-fetch'; //require('es6-promise').polyfill();
 import Moment from 'moment';
+
+export function getSensors_Async() {
+	return function(dispatch) {
+		const apiCall = '/api/sensors';
+		return fetch(apiCall).then(
+			response => response.json(),
+			error => console.log('error'+ error)
+		).then(
+			json => dispatch(loadSensors(json))
+		);
+	};
+}
+
 export function getReadings_Async(sensorId) {
-  return function (dispatch) {
-    const apiCall = '/api/sensors/'+sensorId+'/readings?start='+Moment().startOf('day').toISOString()+'&end='+Moment().endOf('day').toISOString()+'&orderBy=asc';
-    // console.log(apiCall);
-    return fetch(apiCall).then(
-      response => response.json(),
-      error => console.log('error')
-    ).then(
-      json => dispatch(loadReadings(sensorId, json))
-    );
-  };
+	return function (dispatch) {
+		const apiCall = '/api/sensors/'+sensorId+'/readings?start='+Moment().startOf('day').toISOString()+'&end='+Moment().endOf('day').toISOString()+'&orderBy=asc'; // console.log(apiCall);
+		return fetch(apiCall).then(
+			response => response.json(),
+			error => console.log('error'+ error)
+		).then(
+			json => dispatch(loadReadings(sensorId, json))
+		);
+	};
 }
 
 

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import io from 'socket.io-client';
 
 import makeStore from './store';
-import { loadSensors, newReading, loadReadings, getReadings_Async } from './action_creators';
+import { newReading, getReadings_Async, getSensors_Async } from './action_creators';
 
 import App from './components/App';
 import SensorCardListContainer from './containers/SensorCardList';
@@ -38,17 +38,7 @@ ReactDOM.render(
 );
 
 // Get Sensors List
-import fetch from 'isomorphic-fetch'; //require('es6-promise').polyfill();
-
-fetch('/api/sensors').then(function(response) {
-	if (response.status >= 400) {
-	    throw new Error("Bad response from server");
-	}
-	return response.json();
-})
-.then(function(json) {
-  	store.dispatch(loadSensors(json));
-});
+store.dispatch(getSensors_Async());
 
 // Get things manualy for now
 setTimeout(() => {
@@ -63,25 +53,3 @@ setTimeout(() => {
 //   console.log(store.getState().get('readings').toJS())
 //   }
 // );
-
-// setTimeout(() => {
-//   store.dispatch(newReading(createRandomReading(1)));
-//   store.dispatch(newReading(createRandomReading(2)));
-// },1000)
-
-
-// // Debug - Simulate NewMessage Events 
-// setInterval(() => {
-//   const sensorId = Math.floor(Math.random() * 2) + 1;
-//   store.dispatch(newReading(createRandomReading(sensorId)));
-// },10000);
-
-// function createRandomReading(sensorId) {
-//   const now = new Date();
-//   return {
-//     id: null, //this is kinda tricky because im getting the sensor object not the reading object
-//     sensor_id: sensorId,
-//     temperature: (Math.floor(Math.random() * (110 - 55 + 1)) + 55).toString(),
-//     reading_at: now.toISOString()
-//   }
-// }
