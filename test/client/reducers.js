@@ -155,8 +155,8 @@ describe('Reducers', () => {
                     const newReading_at = '2016-05-28T23:55:12.000Z';
 
                     const newReading = {
-                        id: null, //this is kinda tricky because im getting the sensor object not the reading object
-                        sensor_id: 2,
+			id: 3,
+   			sensor_id: 2,
                         temperature: newTemperature,
                         reading_at: newReading_at
                     };
@@ -168,14 +168,22 @@ describe('Reducers', () => {
                           api_key:"72f18b5f6f63b572e58c48d19c957b51",
                           created_at:null,
                           updated_at:"2016-05-03T03:08:12.876Z",
-                          current_reading:"122.00",
                           reading_at:"2016-05-28T23:52:08.000Z",
                           sensortype:{  
                              id:1,
                              name:"Local",
                              created_at:null,
                              updated_at:null
-                          }
+			  },
+			  current_reading_id:1,
+			  current_reading: {
+		             id:1,
+		             sensor_id:1,
+			     temperature:100.00,
+		             created_at:null,
+		             updated_at:null,
+		             reading_at:""	     
+			  }
                         },
                         {  
                           id:2,
@@ -184,14 +192,22 @@ describe('Reducers', () => {
                           api_key:"72f18b5f6f63b572e58c48d19c957b52",
                           created_at:null,
                           updated_at:"2016-05-03T16:36:37.224Z",
-                          current_reading:"92.00",
                           reading_at:"2016-05-28T23:55:12.000Z",
                           sensortype:{  
                              id:2,
                              name:"External",
                              created_at:null,
                              updated_at:null
-                          }
+			  },
+		          current_reading_id:2,
+			  current_reading: {
+		             id:2,
+		             sensor_id:2,
+			     temperature:100.00,
+		             created_at:null,
+		             updated_at:null,
+		             reading_at:""	     
+			  }
                         }
                     ]);
                     const expectedState = fromJS([  
@@ -209,7 +225,16 @@ describe('Reducers', () => {
                              name:"Local",
                              created_at:null,
                              updated_at:null
-                          }
+			  },
+			  current_reading_id:1,
+			  current_reading: {
+		             id:1,
+		             sensor_id:1,
+			     temperature:100.00,
+		             created_at:null,
+		             updated_at:null,
+		             reading_at:""	     
+			  }
                         },
                         {  
                           id:2,
@@ -225,7 +250,16 @@ describe('Reducers', () => {
                              name:"External",
                              created_at:null,
                              updated_at:null
-                          }
+			  },
+		          current_reading_id:newReading.id,
+			  current_reading: {
+		             id:newReading.id,
+		             sensor_id:newReading.sensor_id,
+			     temperature:newReading.temperature,
+		             created_at:null,
+		             updated_at:null,
+		             reading_at:newReading.reading_at
+			  }
                         }
                     ]);
                     expect(sensorsReducer(initialState,newReadingCreator(newReading))).to.equal(expectedState);
@@ -247,7 +281,7 @@ describe('Reducers', () => {
         describe('Handles actions', () => {
 
             describe('Load Sensors', () => {
-                it('adds new Map keys for each sensor', ()=> {
+                it('adds new Map with sensor_id keys for each sensor', ()=> {
                   const initialState = Map();
                   const newSensorList = [  
                       {  
@@ -257,14 +291,22 @@ describe('Reducers', () => {
                         api_key:"72f18b5f6f63b572e58c48d19c957b51",
                         created_at:null,
                         updated_at:"2016-05-03T03:08:12.876Z",
-                        current_reading:"122.00",
+                        current_reading_id:11,
                         reading_at:"2016-05-28T23:52:08.000Z",
                         sensortype:{  
                            id:1,
                            name:"Local",
                            created_at:null,
                            updated_at:null
-                        }
+			},
+			current_reading: {
+				id:11,
+				sensor_id:1,
+				temperature:100.00,
+		             	created_at:null,
+		             	updated_at:null,
+				reading_at:"2016-05-28T23:52:08.000Z"
+			}
                       },
                       {  
                         id:2,
@@ -273,22 +315,31 @@ describe('Reducers', () => {
                         api_key:"72f18b5f6f63b572e58c48d19c957b52",
                         created_at:null,
                         updated_at:"2016-05-03T16:36:37.224Z",
-                        current_reading:"92.00",
+                        current_reading_id:12,
                         reading_at:"2016-05-28T23:55:12.000Z",
                         sensortype:{  
                            id:2,
                            name:"External",
                            created_at:null,
                            updated_at:null
-                        }
+			},
+			current_reading: {
+				id:12,
+				sensor_id:2,
+				temperature:100.00,
+		             	created_at:null,
+		             	updated_at:null,
+				reading_at:"2016-05-28T23:55:12.000Z"
+			}
                       }
                   ];
                   const result = readingsReducer(initialState,loadSensorCreator(newSensorList));
-                  expect(List.isList(result.get('1'))).to.equal(true);
-                  expect(List.isList(result.get('2'))).to.equal(true);
+		  expect(Map.isMap(result.get('1'))).to.equal(true);
+                  expect(Map.isMap(result.get('2'))).to.equal(true);
+
                 });
 
-                it('adds the current_reading to the readings List', ()=> {
+                it('adds current_reading obj to a child MAP with the reading id as the key', ()=> {
                   const initialState = Map();
                   const newSensorList = [  
                       {  
@@ -298,14 +349,22 @@ describe('Reducers', () => {
                         api_key:"72f18b5f6f63b572e58c48d19c957b51",
                         created_at:null,
                         updated_at:"2016-05-03T03:08:12.876Z",
-                        current_reading:"122.00",
+                        current_reading_id:11,
                         reading_at:"2016-05-28T23:52:08.000Z",
                         sensortype:{  
                            id:1,
                            name:"Local",
                            created_at:null,
                            updated_at:null
-                        }
+			},
+			current_reading: {
+				id:11,
+				sensor_id:1,
+				temperature:"122.00",		
+				created_at:null,
+		             	updated_at:null,
+				reading_at:"2016-05-28T23:52:08.000Z"
+			}
                       },
                       {  
                         id:2,
@@ -314,29 +373,46 @@ describe('Reducers', () => {
                         api_key:"72f18b5f6f63b572e58c48d19c957b52",
                         created_at:null,
                         updated_at:"2016-05-03T16:36:37.224Z",
-                        current_reading:"92.00",
+                        current_reading_id:12,
                         reading_at:"2016-05-28T23:55:12.000Z",
                         sensortype:{  
                            id:2,
                            name:"External",
                            created_at:null,
                            updated_at:null
-                        }
+			},
+			current_reading: {
+				id:12,
+				sensor_id:2,
+				temperature:"92.00",		
+				created_at:null,
+		             	updated_at:null,
+				reading_at:"2016-05-28T23:55:12.000Z"
+			}
                       }
-                  ];
-                  const expectedResult = fromJS({
-                    '1': [{
-                      id: null,
-                      sensor_id: 1,
-                      temperature: "122.00",
-                      reading_at: "2016-05-28T23:52:08.000Z"
-                    }],
-                    '2': [{
-                      id: null,
-                      sensor_id: 2,
-                      temperature: "92.00",
-                      reading_at: "2016-05-28T23:55:12.000Z"
-                    }]
+                  ];		  
+		  
+		  const expectedResult = fromJS({
+                    '1': {
+		      '11': {	    
+	              	id: 11,
+                      	sensor_id: 1,
+			temperature: "122.00",
+			created_at:null,
+	             	updated_at:null,
+			reading_at: "2016-05-28T23:52:08.000Z"
+		      }
+                    },
+		    '2': {
+		      '12': {
+                      	id: 12,
+                      	sensor_id: 2,
+                      	temperature: "92.00",
+			created_at:null,
+	             	updated_at:null,
+			reading_at: "2016-05-28T23:55:12.000Z"
+		      }
+                    }
                   });                  
                   expect(readingsReducer(initialState,loadSensorCreator(newSensorList))).to.equal(expectedResult);
                 });     
@@ -346,60 +422,62 @@ describe('Reducers', () => {
                 it('are added to the correct sensor reading list', () => {
 
                     const newReading = {
-                        id: null, //this is kinda tricky because im getting the sensor object not the reading object
+                        id: 21, 
                         sensor_id: 2,
                         temperature: '88.02',
                         reading_at: '2016-05-28T23:55:12.000Z'
                     };
-                    const initialState = fromJS({  
-                        '1':[
+                    const initialState = fromJS({
+			'1': {
+			  '21':
                           {  
-                            id:"21",
+                            id:21,
                             sensor_id:1,
                             temperature:"122.00",
                             created_at:"2016-05-03T03:08:12.871Z",
                             updated_at:"2016-05-03T03:08:12.871Z",
                             reading_at:"2016-05-28T23:52:08.000Z"
                           }
-                        ],
-                        '2': [
-                          {  
-                              id:"20",
+			},
+                        '2': { 
+			  '20':	
+			  {  
+                              id:20,
                               sensor_id:2,
                               temperature:"100.00",
                               created_at:"2016-05-03T03:07:30.881Z",
                               updated_at:"2016-05-03T03:07:30.881Z",
                               reading_at:"2016-05-28T23:51:08.000Z"
                           }
-                        ]
+			}
                     });
                     const expectedState = fromJS({
-                        '1': [
-                          {  
-                              id:"21",
+                        '1': {
+                          '21': {  
+                              id:21,
                               sensor_id:1,
                               temperature:"122.00",
                               created_at:"2016-05-03T03:08:12.871Z",
                               updated_at:"2016-05-03T03:08:12.871Z",
                               reading_at:"2016-05-28T23:52:08.000Z"
                           }
-                        ],
-                        '2': [
-                          {  
-                            id:"20",
+			},
+                        '2': {
+                          '20': {  
+                            id:20,
                             sensor_id:2,
                             temperature:"100.00",
                             created_at:"2016-05-03T03:07:30.881Z",
                             updated_at:"2016-05-03T03:07:30.881Z",
                             reading_at:"2016-05-28T23:51:08.000Z"
                           },
-                          {
-                            id: null, //this is kinda tricky because im getting the sensor object not the reading object
+                          '21': {
+                            id: 21,
                             sensor_id: 2,
                             temperature: '88.02',
                             reading_at: '2016-05-28T23:55:12.000Z'
                           }
-                        ]
+			}
                     });
                     expect(readingsReducer(initialState,newReadingCreator(newReading))).to.equal(expectedState);
                 });
