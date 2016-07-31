@@ -3,9 +3,6 @@
 ## Purpuse
 Server for logging and reporting on home temperature. The server project provides a RESTfull API for the [thermal-sensor](https://github.com/jwtlake/thermal-sensor) project to report to. The server also provides a dashboard UI for monitoring current temerature readings. API has already been implimented to report on historical readings but the functionality hasn't been implimented yet.
 
-## Live Demo!
-http://thermal.jwtlake.com/
-
 ## Usage
 See To Do
 
